@@ -31,7 +31,7 @@ if sys.version_info < (3, 10):
 @dataclasses.dataclass
 class Parameter:
     """
-    Default is `inspect._empty` when there is no default.
+    `default` is `inspect._empty` when there is no default.
     """
     name: str
     annotation: typing.Any
