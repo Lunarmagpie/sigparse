@@ -7,6 +7,8 @@ import inspect
 import forbiddenfruit  # type: ignore
 
 
+__all__: typing.Sequence[str] = ("sigparse", "Parameter")
+
 def _PEP604() -> None:
     """
     Allow writing union types as X | Y
@@ -33,8 +35,8 @@ class Parameter:
     kind: inspect._ParameterKind
 
 
-def convert_signiture(
-    param: Parameter | inspect.Parameter, type_hints: dict[str, type[typing.Any]]
+def _convert_signiture(
+    param: inspect.Parameter, type_hints: dict[str, type[typing.Any]]
 ) -> Parameter:
     annotation = type_hints.get(param.name)
     return Parameter(
@@ -65,4 +67,4 @@ def sigparse(func: typing.Callable[..., typing.Any]) -> typing.Sequence[Paramete
 
     sig = inspect.signature(func)
 
-    return [convert_signiture(param, type_hints) for param in sig.parameters.values()]
+    return [_convert_signiture(param, type_hints) for param in sig.parameters.values()]
