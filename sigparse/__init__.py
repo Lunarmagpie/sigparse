@@ -9,6 +9,7 @@ import forbiddenfruit  # type: ignore
 
 __all__: typing.Sequence[str] = ("sigparse", "Parameter")
 
+
 def _PEP604() -> None:
     """
     Allow writing union types as X | Y
@@ -29,9 +30,12 @@ if sys.version_info < (3, 10):
 
 @dataclasses.dataclass
 class Parameter:
+    """
+    Default is `inspect._empty` when there is no default.
+    """
     name: str
     annotation: typing.Any
-    default: str
+    default: typing.Any
     kind: inspect._ParameterKind
 
 
