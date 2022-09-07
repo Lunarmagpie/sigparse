@@ -24,5 +24,4 @@ This module uses inspect behind the scenes. For that reason:
 
 
 ### Annotated
-`typing.Annotated` will always be evaluated with `include_extras=True` in python3.9. This ensures that
-`typing.Annotated` will be parsed the same in all python versions.
+`typing.Annotated` will always be evaluated with `include_extras=True` in python3.9.
