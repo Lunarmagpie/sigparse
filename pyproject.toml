@@ -14,6 +14,19 @@ nox = "^2022.8.7"
 mypy = "^0.971"
 pytest = "^7.1.3"
 
+[tool.black]
+line-length = 88
+target-version = ['py38']
+skip-magic-trailing-comma = true
+
+[tool.mypy]
+python_version = 3.8
+strict = true
+warn_unused_configs = true
+warn_return_any = true
+warn_redundant_casts = true
+namespace_packages = true
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

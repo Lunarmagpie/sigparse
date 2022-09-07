@@ -4,18 +4,19 @@ import dataclasses
 import typing
 import sys
 import inspect
-import forbiddenfruit
+import forbiddenfruit  # type: ignore
 
 
-def _PEP604():
+def _PEP604() -> None:
     """
     Allow writing union types as X | Y
     """
-    def _union_or(left, right):
+
+    def _union_or(left: typing.Any, right: typing.Any) -> typing.Any:
         return typing.Union[left, right]
 
-    setattr(typing._GenericAlias, "__or__", _union_or)
-    setattr(typing._GenericAlias, "__ror__", _union_or)
+    setattr(typing._GenericAlias, "__or__", _union_or)  # type: ignore
+    setattr(typing._GenericAlias, "__ror__", _union_or)  # type: ignore
 
     forbiddenfruit.curse(type, "__or__", _union_or)
 
@@ -32,7 +33,9 @@ class Parameter:
     kind: inspect._ParameterKind
 
 
-def convert_signiture(param: Parameter, type_hints: dict[str, type[typing.Any]]) -> Parameter:
+def convert_signiture(
+    param: Parameter | inspect.Parameter, type_hints: dict[str, type[typing.Any]]
+) -> Parameter:
     annotation = type_hints.get(param.name)
     return Parameter(
         name=param.name,
@@ -47,7 +50,11 @@ def sigparse(func: typing.Callable[..., typing.Any]) -> typing.Sequence[Paramete
         return inspect.signature(func, eval_str=True).parameters.values()
 
     localns: dict[str, typing.Any] = {
-        "list": typing.List, "type": typing.Type, "dict": typing.Dict, "tuple": typing.Tuple}
+        "list": typing.List,
+        "type": typing.Type,
+        "dict": typing.Dict,
+        "tuple": typing.Tuple,
+    }
 
     if sys.version_info >= (3, 9):
         type_hints: dict[str, typing.Any] = typing.get_type_hints(
