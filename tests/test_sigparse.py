@@ -19,7 +19,7 @@ def test_union():
 
 def test_subscriptable():
     def func(
-        _dict: dict[typing.Any],
+        _dict: dict[typing.Any, typing.Any],
         _list: list[typing.Any],
         _tuple: tuple[typing.Any],
         _type: type[typing.Any],
