@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "sigparse"
+version = "1.0.0"
+description = "Backports python3.10 typing features into python3.8 and python3.9"
+authors = ["Lunarmagpie <bambolambo0@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+forbiddenfruit = "^0.1.4"
+
+[tool.poetry.dev-dependencies]
+black = "^22.8.0"
+nox = "^2022.8.7"
+mypy = "^0.971"
+pytest = "^7.1.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
