@@ -15,7 +15,7 @@ sigparse.sigparse(func)
 ```
 
 ### PEP604
-By default PEP 604 (| for unions) is only enabled for `sigparse.sigparse`
+By default PEP 604 (| for unions) is only enabled for `sigparse.sigparse`.
 To enable globally:
 ```python
 import sigparse
