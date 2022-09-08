@@ -50,15 +50,18 @@ def _apply_PEP604() -> None:
 
     forbiddenfruit.curse(type, "__or__", _union_or)
 
+
 def _revert_PEP604() -> None:
     if sys.version_info >= (3, 10):
         return
 
     forbiddenfruit.reverse(type, "__or__")
 
+
 GLOBAL_PEP604 = False
 
-def global_PEP604():
+
+def global_PEP604() -> None:
     global GLOBAL_PEP604
     GLOBAL_PEP604 = True
     _apply_PEP604()
@@ -69,6 +72,7 @@ class Parameter:
     """
     `default` is `inspect._empty` when there is no default.
     """
+
     name: str
     annotation: typing.Any
     default: typing.Any
