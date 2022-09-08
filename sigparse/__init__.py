@@ -94,7 +94,6 @@ class Parameter:
         return not self.annotation is inspect._empty
 
 
-
 def _convert_signiture(
     param: inspect.Parameter, type_hints: dict[str, type[typing.Any]]
 ) -> Parameter:
@@ -110,8 +109,8 @@ def _convert_signiture(
 def sigparse(func: typing.Callable[..., typing.Any]) -> list[Parameter]:
     if sys.version_info >= (3, 10):
         return [
-            _convert_signiture(param, {}) for param in
-            inspect.signature(func, eval_str=True).parameters.values()
+            _convert_signiture(param, {})
+            for param in inspect.signature(func, eval_str=True).parameters.values()
         ]
 
     localns: dict[str, typing.Any] = {
