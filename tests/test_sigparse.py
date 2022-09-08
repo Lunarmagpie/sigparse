@@ -32,13 +32,17 @@ def test_subscriptable():
     sigparse.sigparse(func)
 
 
-@pytest.mark.skipif(sys.version_info >= (3, 10), reason="Feature will always work in this version.")
+@pytest.mark.skipif(
+    sys.version_info >= (3, 10), reason="Feature will always work in this version."
+)
 def test_global_PEP604_disabled():
     with pytest.raises(TypeError):
         int | str
 
 
-@pytest.mark.skipif(sys.version_info >= (3, 10), reason="Feature will always work in this version.")
+@pytest.mark.skipif(
+    sys.version_info >= (3, 10), reason="Feature will always work in this version."
+)
 def test_global_PEP604_enabled():
     sigparse.global_PEP604()
     int | str
