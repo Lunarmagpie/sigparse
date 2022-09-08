@@ -1,7 +1,7 @@
 # MIT License
 
 # Copyright (c) 2022 Lunarmagpie
-# L37-L48 Copyright (c) 2022 Endercheif
+# L37-L51 Copyright (c) 2022 Endercheif
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,8 @@ def global_PEP604() -> None:
 @dataclasses.dataclass
 class Parameter:
     """
-    `default` is `inspect._empty` when there is no default.
+    `default` and `annotation` are `inspect._empty` when there is no default or
+    annotation respectively.
     """
 
     name: str
@@ -78,11 +79,20 @@ class Parameter:
     default: typing.Any
     kind: inspect._ParameterKind
 
+    @property
     def has_default(self) -> bool:
         """
         Return `True` if this argument has a default value.
         """
         return not self.default is inspect._empty
+
+    @property
+    def has_annotation(self) -> bool:
+        """
+        Return `True` if this argument has an annotation.
+        """
+        return not self.annotation is inspect._empty
+
 
 
 def _convert_signiture(
@@ -97,9 +107,12 @@ def _convert_signiture(
     )
 
 
-def sigparse(func: typing.Callable[..., typing.Any]) -> typing.Sequence[Parameter]:
+def sigparse(func: typing.Callable[..., typing.Any]) -> list[Parameter]:
     if sys.version_info >= (3, 10):
-        return inspect.signature(func, eval_str=True).parameters.values()
+        return [
+            _convert_signiture(param, {}) for param in
+            inspect.signature(func, eval_str=True).parameters.values()
+        ]
 
     localns: dict[str, typing.Any] = {
         "list": typing.List,
