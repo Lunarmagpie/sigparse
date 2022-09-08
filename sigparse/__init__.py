@@ -39,6 +39,9 @@ def _apply_PEP604() -> None:
     Allow writing union types as X | Y
     """
 
+    if sys.version_info >= (3, 10):
+        return
+
     def _union_or(left: typing.Any, right: typing.Any) -> typing.Any:
         return typing.Union[left, right]
 
@@ -48,6 +51,9 @@ def _apply_PEP604() -> None:
     forbiddenfruit.curse(type, "__or__", _union_or)
 
 def _revert_PEP604() -> None:
+    if sys.version_info >= (3, 10):
+        return
+
     forbiddenfruit.reverse(type, "__or__")
 
 GLOBAL_PEP604 = False
