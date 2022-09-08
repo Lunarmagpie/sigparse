@@ -14,6 +14,14 @@ def func(param_a: list[str], param_b: str | int, param_c: tuple[int | None]):
 sigparse.sigparse(func)
 ```
 
+### PEP604
+By default PEP 604 (| for unions) is only enabled for `sigparse.sigparse`
+To enable globally:
+```python
+import sigparse
+sigparse.global_PEP604()
+```
+
 ## Notes
 ### Inspect
 

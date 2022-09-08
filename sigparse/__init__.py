@@ -31,10 +31,10 @@ import inspect
 import forbiddenfruit  # type: ignore
 
 
-__all__: typing.Sequence[str] = ("sigparse", "Parameter")
+__all__: typing.Sequence[str] = ("sigparse", "Parameter", "global_PEP604")
 
 
-def _PEP604() -> None:
+def _apply_PEP604() -> None:
     """
     Allow writing union types as X | Y
     """
@@ -47,9 +47,15 @@ def _PEP604() -> None:
 
     forbiddenfruit.curse(type, "__or__", _union_or)
 
+def _revert_PEP604() -> None:
+    forbiddenfruit.reverse(type, "__or__")
 
-if sys.version_info < (3, 10):
-    _PEP604()
+GLOBAL_PEP604 = False
+
+def global_PEP604():
+    global GLOBAL_PEP604
+    GLOBAL_PEP604 = True
+    _apply_PEP604()
 
 
 @dataclasses.dataclass
@@ -86,6 +92,9 @@ def sigparse(func: typing.Callable[..., typing.Any]) -> typing.Sequence[Paramete
         "tuple": typing.Tuple,
     }
 
+    if not GLOBAL_PEP604:
+        _apply_PEP604()
+
     if sys.version_info >= (3, 9):
         type_hints: dict[str, typing.Any] = typing.get_type_hints(
             func, include_extras=True, localns=localns
@@ -94,5 +103,8 @@ def sigparse(func: typing.Callable[..., typing.Any]) -> typing.Sequence[Paramete
         type_hints = typing.get_type_hints(func, localns=localns)
 
     sig = inspect.signature(func)
+
+    if not GLOBAL_PEP604:
+        _revert_PEP604()
 
     return [_convert_signiture(param, type_hints) for param in sig.parameters.values()]
