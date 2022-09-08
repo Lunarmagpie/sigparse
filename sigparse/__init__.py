@@ -78,6 +78,12 @@ class Parameter:
     default: typing.Any
     kind: inspect._ParameterKind
 
+    def has_default(self) -> bool:
+        """
+        Return `True` if this argument has a default value.
+        """
+        return not self.default is inspect._empty
+
 
 def _convert_signiture(
     param: inspect.Parameter, type_hints: dict[str, type[typing.Any]]
