@@ -1,6 +1,6 @@
 # sigparse
 
-Backports python3.10 typing features into python3.8 and 3.9.
+Backports python3.10 typing features into python 3.7, 3.8, and 3.9.
 
 ## Example
 
@@ -10,7 +10,7 @@ import sigparse
 def func(param_a: list[str], param_b: str | int, param_c: tuple[int | None]):
     ...
 
-# This returns the same result in python 3.8, 3.9, and 3.10!
+# This returns the same result in python 3.7, 3.8, 3.9, and 3.10!
 sigparse.sigparse(func)
 ```
 

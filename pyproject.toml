@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "sigparse"
 version = "1.0.0"
-description = "Backports python3.10 typing features into python3.8 and python3.9."
+description = "Backports python3.10 typing features into python 3.7 and newer."
 authors = ["Lunarmagpie <bambolambo0@gmail.com>"]
 license = "MIT"
 readme = "README.md"
@@ -11,7 +11,7 @@ homepage = "https://github.com/Lunarmagpie/sigparse"
 "Bug Tracker" = "https://github.com/python-poetry/poetry/issues"
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.7"
 forbiddenfruit = "^0.1.4"
 
 [tool.poetry.dev-dependencies]
