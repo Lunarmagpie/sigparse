@@ -84,14 +84,14 @@ class Parameter:
         """
         Return `True` if this argument has a default value.
         """
-        return not self.default is inspect._empty
+        return self.default is not inspect._empty
 
     @property
     def has_annotation(self) -> bool:
         """
         Return `True` if this argument has an annotation.
         """
-        return not self.annotation is inspect._empty
+        return self.annotation is not inspect._empty
 
 
 def _convert_signiture(
