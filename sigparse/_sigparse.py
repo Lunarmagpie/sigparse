@@ -26,9 +26,7 @@ from __future__ import annotations
 
 import dataclasses
 import typing
-import sys
 import inspect
-import forbiddenfruit  # type: ignore
 
 from sigparse._applicator import Applicator
 
