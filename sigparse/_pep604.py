@@ -1,6 +1,6 @@
 # MIT License
 
-# Copyright (c) 2022 Lunarmagpie
+# Copyright (c) 2022 Endercheif
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,53 @@
 # SOFTWARE.
 
 
-from __future__ import annotations
-
 import typing
-from sigparse._sigparse import sigparse, Parameter
-from sigparse._classparse import classparse
-from sigparse._pep604 import global_PEP604
+import sys
 
-__all__: typing.Sequence[str] = ("classparse", "sigparse", "Parameter", "global_PEP604")
+if sys.version_info < (3, 10):
+    import forbiddenfruit  # type: ignore
+
+
+__all__: typing.Sequence[str] = ("PEP604_CTX",)
+
+
+def _apply_PEP604() -> None:
+    """
+    Allow writing union types as X | Y
+    """
+
+    if sys.version_info >= (3, 10):
+        return
+
+    def _union_or(left: typing.Any, right: typing.Any) -> typing.Any:
+        return typing.Union[left, right]
+
+    setattr(typing._GenericAlias, "__or__", _union_or)  # type: ignore
+    setattr(typing._GenericAlias, "__ror__", _union_or)  # type: ignore
+
+    forbiddenfruit.curse(type, "__or__", _union_or)
+
+
+def _revert_PEP604() -> None:
+    if sys.version_info >= (3, 10):
+        return
+
+    forbiddenfruit.reverse(type, "__or__")
+
+
+GLOBAL_PEP604 = False
+
+
+def global_PEP604() -> None:
+    global GLOBAL_PEP604
+    GLOBAL_PEP604 = True
+    _apply_PEP604()
+
+
+class PEP604_CTX:
+    def __enter__(self) -> None:
+        _apply_PEP604()
+
+    def __exit__(self, *_: typing.Any) -> None:
+        if not GLOBAL_PEP604:
+            _revert_PEP604()

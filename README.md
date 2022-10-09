@@ -14,6 +14,20 @@ def func(param_a: list[str], param_b: str | int, param_c: tuple[int | None]):
 sigparse.sigparse(func)
 ```
 
+Sigparse also supports classes.
+
+```python
+import sigparse
+
+class MyClass:
+    a: list[str]
+    b: str | int
+    c: tuple[int | None]
+
+sigparse.classparse(MyClass)
+```
+
+
 ### PEP604
 By default PEP 604 (| for unions) is only enabled for `sigparse.sigparse`.
 To enable globally:

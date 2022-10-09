@@ -7,7 +7,7 @@ import typing
 import pytest
 
 
-def test_union():
+def test_sigparse_union():
     def func(param: int | str):
         ...
 
@@ -19,7 +19,7 @@ def test_union():
     assert param.kind == inspect._ParameterKind.POSITIONAL_OR_KEYWORD
 
 
-def test_subscriptable():
+def test_sigparse_subscriptable():
     def func(
         _dict: dict[typing.Any, typing.Any],
         _list: list[typing.Any],
@@ -30,6 +30,28 @@ def test_subscriptable():
 
     # Subscripting worked properly if this passed without errors.
     sigparse.sigparse(func)
+
+def test_classparse_union():
+    class Cls:
+        param: int | str
+
+    res = sigparse.classparse(Cls)
+
+    assert res == {
+        "param": typing.Union[int, str],
+    }
+
+
+def test_classparse_subscriptable():
+    class Cls:
+        _dict: dict[typing.Any, typing.Any]
+        _list: list[typing.Any]
+        _tuple: tuple[typing.Any]
+        _type: type[typing.Any]
+
+    # same as test_sigparse_subscriptable
+    sigparse.classparse(Cls)
+
 
 
 @pytest.mark.skipif(
