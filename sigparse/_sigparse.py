@@ -28,7 +28,6 @@ import dataclasses
 import typing
 import inspect
 
-import types
 from sigparse._applicator import Applicator
 
 __all__: typing.Sequence[str] = ("sigparse", "Parameter")
@@ -73,7 +72,7 @@ def _convert_signiture(
     )
 
 
-class Sigparse(Applicator[types.FunctionType, "list[Parameter]"]):
+class Sigparse(Applicator[typing.Any, "list[Parameter]"]):
     def gt_or_eq_310(self, func: typing.Any) -> list[Parameter]:
         return [
             _convert_signiture(param, {})
@@ -96,5 +95,5 @@ class Sigparse(Applicator[types.FunctionType, "list[Parameter]"]):
             _convert_signiture(param, type_hints) for param in sig.parameters.values()
         ]
 
-def sigparse(func: types.FunctionType) -> list[Parameter]:
+def sigparse(func: typing.Any) -> list[Parameter]:
     return Sigparse(func)()
