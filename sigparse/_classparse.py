@@ -20,12 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
 from __future__ import annotations
 
-import typing
-from sigparse._sigparse import sigparse, Parameter
-from sigparse._classparse import classparse
-from sigparse._pep604 import global_PEP604
 
-__all__: typing.Sequence[str] = ("classparse", "sigparse", "Parameter", "global_PEP604")
+import typing
+
+from sigparse._applicator import Applicator
+
+
+class classparse(Applicator["dict[str, type]"]):
+    def gt_or_eq_310(self, func: typing.Any) -> dict[str, type]:
+        return typing.get_type_hints(func, include_extras=True)  # type: ignore
+
+    def eq_309(self, func: typing.Any) -> dict[str, type]:
+        return typing.get_type_hints(func, include_extras=True)  # type: ignore
+
+    def lt_or_eq_308(self, func: typing.Any, localns: dict[str, type]) -> dict[str, type]:
+        return typing.get_type_hints(func, localns=localns)  # type: ignore
