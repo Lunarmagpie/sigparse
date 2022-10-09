@@ -29,16 +29,19 @@ from sigparse._applicator import Applicator
 
 
 class Classparse(Applicator[type, "dict[str, type]"]):
+    @typing.no_type_check
     def gt_or_eq_310(self, func: typing.Any) -> dict[str, type]:
-        return typing.get_type_hints(func, include_extras=True)  # type: ignore
+        return typing.get_type_hints(func, include_extras=True)
 
+    @typing.no_type_check
     def eq_309(self, func: typing.Any) -> dict[str, type]:
-        return typing.get_type_hints(func, include_extras=True)  # type: ignore
+        return typing.get_type_hints(func, include_extras=True)
 
+    @typing.no_type_check
     def lt_or_eq_308(
         self, func: typing.Any, localns: dict[str, type]
     ) -> dict[str, type]:
-        return typing.get_type_hints(func, localns=localns)  # type: ignore
+        return typing.get_type_hints(func, localns=localns)
 
 
 def classparse(cls: type) -> dict[str, type]:

@@ -73,26 +73,29 @@ def _convert_signiture(
 
 
 class Sigparse(Applicator[typing.Any, "list[Parameter]"]):
+    @typing.no_type_check
     def gt_or_eq_310(self, func: typing.Any) -> list[Parameter]:
         return [
             _convert_signiture(param, {})
             for param in inspect.signature(
                 func, eval_str=True
-            ).parameters.values()  # type: ignore
+            ).parameters.values()
         ]
 
+    @typing.no_type_check
     def eq_309(self, func: typing.Any) -> list[Parameter]:
         sig = inspect.signature(func)
-        type_hints = typing.get_type_hints(func, include_extras=True)  # type: ignore
+        type_hints = typing.get_type_hints(func, include_extras=True)
         return [
             _convert_signiture(param, type_hints) for param in sig.parameters.values()
         ]
 
+    @typing.no_type_check
     def lt_or_eq_308(
         self, func: typing.Any, localns: dict[str, type]
     ) -> list[Parameter]:
         sig = inspect.signature(func)
-        type_hints = typing.get_type_hints(func, localns=localns)  # type: ignore
+        type_hints = typing.get_type_hints(func, localns=localns)
         return [
             _convert_signiture(param, type_hints) for param in sig.parameters.values()
         ]
