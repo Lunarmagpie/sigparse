@@ -12,7 +12,7 @@ homepage = "https://github.com/Lunarmagpie/sigparse"
 
 [tool.poetry.dependencies]
 python = ">=3.7"
-forbiddenfruit = "^0.1.4"
+forbiddenfruit =  { version="^0.1.4", python = "<3.10" } 
 
 [tool.poetry.dev-dependencies]
 black = "^22.8.0"

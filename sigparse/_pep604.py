@@ -23,7 +23,10 @@
 
 import typing
 import sys
-import forbiddenfruit  # type: ignore
+
+if sys.version_info < (3,10):
+    import forbiddenfruit  # type: ignore
+
 
 
 __all__: typing.Sequence[str] = ("PEP604_CTX",)
