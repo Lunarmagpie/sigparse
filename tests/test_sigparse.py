@@ -49,6 +49,7 @@ def test_classparse_subscriptable():
         _tuple: tuple[typing.Any]
         _type: type[typing.Any]
 
+    # same as test_sigparse_subscriptable
     sigparse.classparse(Cls)
 
 
