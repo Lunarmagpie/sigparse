@@ -35,8 +35,11 @@ class Classparse(Applicator[type, "dict[str, type]"]):
     def eq_309(self, func: typing.Any) -> dict[str, type]:
         return typing.get_type_hints(func, include_extras=True)  # type: ignore
 
-    def lt_or_eq_308(self, func: typing.Any, localns: dict[str, type]) -> dict[str, type]:
+    def lt_or_eq_308(
+        self, func: typing.Any, localns: dict[str, type]
+    ) -> dict[str, type]:
         return typing.get_type_hints(func, localns=localns)  # type: ignore
+
 
 def classparse(cls: type) -> dict[str, type]:
     return Classparse(cls)()
