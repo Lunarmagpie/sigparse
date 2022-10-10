@@ -43,6 +43,7 @@ This module uses inspect behind the scenes. For that reason:
 
 - `sigparse.Parameter.default` is `inspect._empty` when there is no default value.
 - `sigparse.Parameter.kind` is `inspect._ParameterKind`.
+- `sigparse.ClassParameter.default` is `inspect._empty` when there is no default value to maintain consistency.
 
 
 ### Annotated
