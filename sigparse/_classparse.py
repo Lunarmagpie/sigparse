@@ -32,6 +32,7 @@ from sigparse._applicator import Applicator
 
 __all__: typing.Sequence[str] = ("classparse", "ClassParameter")
 
+
 @dataclasses.dataclass
 class ClassParameter:
     name: str
