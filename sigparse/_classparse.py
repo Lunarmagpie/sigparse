@@ -21,6 +21,8 @@
 # SOFTWARE.
 
 from __future__ import annotations
+import dataclasses
+import inspect
 
 
 import typing
@@ -28,21 +30,63 @@ import typing
 from sigparse._applicator import Applicator
 
 
-class Classparse(Applicator[type, "dict[str, type]"]):
+__all__: typing.Sequence[str] = ("classparse", "ClassVar")
+
+
+@dataclasses.dataclass
+class ClassVar:
+    """
+    `default` is `inspect._empty` when there is no default value.
+    """
+
+    name: str
+    annotation: typing.Any
+    default: typing.Any
+
+    @property
+    def has_default(self) -> bool:
+        """
+        Return `True` if this class var has a default value.
+        """
+        return self.default is not inspect._empty
+
+
+def _convert_parameter(name: str, annotation: typing.Any, cls: typing.Any) -> ClassVar:
+    return ClassVar(
+        name=name, annotation=annotation, default=cls.__dict__.get(name, inspect._empty)
+    )
+
+
+def convert_result(
+    wrap: typing.Callable[..., dict[str, type]]
+) -> typing.Callable[..., list[ClassVar]]:
+    def inner(
+        self: Classparse, cls: type, *args: typing.Any, **kwargs: typing.Any
+    ) -> list[ClassVar]:
+        return [
+            _convert_parameter(name, annotation, cls)
+            for name, annotation in wrap(self, cls, *args, **kwargs).items()
+        ]
+
+    return inner
+
+
+class Classparse(Applicator[type, "list[ClassVar]"]):
+    @convert_result
     @typing.no_type_check
-    def gt_or_eq_310(self, func: typing.Any) -> dict[str, type]:
-        return typing.get_type_hints(func, include_extras=True)
+    def gt_or_eq_310(self, cls: type) -> dict[str, type]:
+        return typing.get_type_hints(cls, include_extras=True)
 
+    @convert_result
     @typing.no_type_check
-    def eq_309(self, func: typing.Any) -> dict[str, type]:
-        return typing.get_type_hints(func, include_extras=True)
+    def eq_309(self, cls: type) -> dict[str, type]:
+        return typing.get_type_hints(cls, include_extras=True)
 
+    @convert_result
     @typing.no_type_check
-    def lt_or_eq_308(
-        self, func: typing.Any, localns: dict[str, type]
-    ) -> dict[str, type]:
-        return typing.get_type_hints(func, localns=localns)
+    def lt_or_eq_308(self, cls: type, localns: dict[str, type]) -> dict[str, type]:
+        return typing.get_type_hints(cls, localns=localns)
 
 
-def classparse(cls: type) -> dict[str, type]:
+def classparse(cls: type) -> list[ClassVar]:
     return Classparse(cls)()

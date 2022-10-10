@@ -37,10 +37,13 @@ def test_classparse_union():
 
     res = sigparse.classparse(Cls)
 
-    assert res == {
-        "param": typing.Union[int, str],
-    }
-
+    assert res == [
+        sigparse.ClassVar(
+            name="param",
+            annotation=typing.Union[int, str],
+            default=inspect._empty,
+        )
+    ]
 
 def test_classparse_subscriptable():
     class Cls:

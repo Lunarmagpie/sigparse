@@ -77,9 +77,7 @@ class Sigparse(Applicator[typing.Any, "list[Parameter]"]):
     def gt_or_eq_310(self, func: typing.Any) -> list[Parameter]:
         return [
             _convert_signiture(param, {})
-            for param in inspect.signature(
-                func, eval_str=True
-            ).parameters.values()
+            for param in inspect.signature(func, eval_str=True).parameters.values()
         ]
 
     @typing.no_type_check
