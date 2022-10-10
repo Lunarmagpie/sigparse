@@ -38,7 +38,7 @@ def test_classparse_union():
     res = sigparse.classparse(Cls)
 
     assert res == [
-        sigparse.ClassParameter(
+        sigparse.ClassVar(
             name="param",
             annotation=typing.Union[int, str],
             default=inspect._empty,

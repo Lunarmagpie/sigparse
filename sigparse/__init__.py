@@ -25,13 +25,13 @@ from __future__ import annotations
 
 import typing
 from sigparse._sigparse import sigparse, Parameter
-from sigparse._classparse import classparse, ClassParameter
+from sigparse._classparse import classparse, ClassVar
 from sigparse._pep604 import global_PEP604
 
 __all__: typing.Sequence[str] = (
     "classparse",
     "sigparse",
     "Parameter",
-    "ClassParameter",
+    "ClassVar",
     "global_PEP604",
 )
