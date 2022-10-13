@@ -55,19 +55,17 @@ def _revert_PEP604() -> None:
     forbiddenfruit.reverse(type, "__or__")
 
 
-GLOBAL_PEP604 = False
-
-
 def global_PEP604() -> None:
-    global GLOBAL_PEP604
-    GLOBAL_PEP604 = True
+    PEP604_CTX.global_PEP604 = True
     _apply_PEP604()
 
 
 class PEP604_CTX:
+    global_PEP604 = False
+
     def __enter__(self) -> None:
         _apply_PEP604()
 
     def __exit__(self, *_: typing.Any) -> None:
-        if not GLOBAL_PEP604:
+        if not self.global_PEP604:
             _revert_PEP604()
