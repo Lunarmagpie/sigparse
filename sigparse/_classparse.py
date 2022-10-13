@@ -77,10 +77,7 @@ class Classparse(Applicator[type, "list[ClassVar]"]):
     def gt_or_eq_310(self, cls: type) -> dict[str, type]:
         return typing.get_type_hints(cls, include_extras=True)
 
-    @convert_result
-    @typing.no_type_check
-    def eq_309(self, cls: type) -> dict[str, type]:
-        return typing.get_type_hints(cls, include_extras=True)
+    eq_309 = gt_or_eq_310
 
     @convert_result
     @typing.no_type_check
