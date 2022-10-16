@@ -4,7 +4,7 @@ import typing
 __all__: typing.Sequence[str] = ("unwrap",)
 
 try:
-    UnionType = types.UnionType
+    UnionType = types.UnionType  # type: ignore
 except AttributeError:
     UnionType = ...
 
