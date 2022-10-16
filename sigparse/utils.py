@@ -1,4 +1,15 @@
+import types
 import typing
+
+__all__: typing.Sequence[str] = ("unwrap",)
+
+try:
+    UnionType = types.UnionType
+except AttributeError:
+    UnionType = ...
+
+NoneType = type(None)
+
 
 def unwrap(typehint: typing.Any) -> typing.Any:
     """
@@ -7,14 +18,21 @@ def unwrap(typehint: typing.Any) -> typing.Any:
     If one of `T` or `U` is `None`, return the non-none value.
     If `T` and `U` are `None`, return `None`.
     If neither `T` or `U` are `None`, return `Union[T, U]`.
+    If `typehint` is not a `Union` or `Option` return `typehint`.
     """
+
+    if typehint is NoneType:
+        return None
+
+    if typing.get_origin(typehint) not in {typing.Union, UnionType}:
+        return typehint
 
     args = typing.get_args(typehint)
 
     if not args:
         return None
 
-    hints = list(filter(lambda x: x is not None, args))
+    hints = list(filter(lambda x: x not in {NoneType, None}, args))
 
     if len(hints) == 1:
         return hints[0]
