@@ -27,6 +27,7 @@ import typing
 from sigparse._sigparse import sigparse, Parameter
 from sigparse._classparse import classparse, ClassVar
 from sigparse._pep604 import global_PEP604
+from sigparse import utils
 
 __all__: typing.Sequence[str] = (
     "classparse",
@@ -34,4 +35,5 @@ __all__: typing.Sequence[str] = (
     "Parameter",
     "ClassVar",
     "global_PEP604",
+    "utils",
 )
