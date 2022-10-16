@@ -30,7 +30,7 @@ sigparse.classparse(MyClass)
 
 ### PEP 604
 By default PEP 604 (| for unions) is only enabled for `sigparse.sigparse` and `sigparse.classparse`.
-The code for PEP 604 was written by @Endercheif.
+The code for PEP 604 was written by [@Endercheif](https://github.com/Endercheif).
 
 To enable globally:
 ```python
