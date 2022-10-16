@@ -10,3 +10,4 @@ def test_unwrap():
     assert sigparse.utils.unwrap(typing.Optional[None]) == None
 
     assert sigparse.utils.unwrap(int) == int
+    assert sigparse.utils.unwrap(None) == None
