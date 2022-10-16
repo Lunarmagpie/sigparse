@@ -11,6 +11,13 @@ except AttributeError:
 NoneType = type(None)
 
 
+def _get_origin(typehint: typing.Any) -> typing.Any:
+    if hasattr(typehint, "__origin__"):
+        return typehint.__origin__
+
+    return None
+
+
 def unwrap(typehint: typing.Any) -> typing.Any:
     """
     Remove the `None` values from a `Union[T, U]` or `Optional[T]`.
@@ -24,7 +31,7 @@ def unwrap(typehint: typing.Any) -> typing.Any:
     if typehint is NoneType:
         return None
 
-    if typing.get_origin(typehint) not in {typing.Union, UnionType}:
+    if _get_origin(typehint) not in {typing.Union, UnionType}:
         return typehint
 
     args = typing.get_args(typehint)
