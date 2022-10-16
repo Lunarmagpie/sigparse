@@ -18,6 +18,13 @@ def _get_origin(typehint: typing.Any) -> typing.Any:
     return None
 
 
+def _get_args(typehint: typing.Any) -> typing.Any:
+    if hasattr(typehint, "__args__"):
+        return typehint.__args__
+
+    return None
+
+
 def unwrap(typehint: typing.Any) -> typing.Any:
     """
     Remove the `None` values from a `Union[T, U]` or `Optional[T]`.
@@ -34,7 +41,7 @@ def unwrap(typehint: typing.Any) -> typing.Any:
     if _get_origin(typehint) not in {typing.Union, UnionType}:
         return typehint
 
-    args = typing.get_args(typehint)
+    args = _get_args(typehint)
 
     if not args:
         return None
