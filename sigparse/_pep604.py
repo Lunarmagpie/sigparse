@@ -42,9 +42,6 @@ def _apply_PEP604() -> None:
     def _union_or(left: typing.Any, right: typing.Any) -> typing.Any:
         return typing.Union[left, right]
 
-    setattr(typing._GenericAlias, "__or__", _union_or)  # type: ignore
-    setattr(typing._GenericAlias, "__ror__", _union_or)  # type: ignore
-
     forbiddenfruit.curse(type, "__or__", _union_or)
 
 
