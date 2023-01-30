@@ -89,24 +89,24 @@ class Sigparse(Applicator[typing.Any, Signature]):
 
     @typing.no_type_check
     def eq_309(self, func: typing.Any) -> Signature:
-        sig = inspect.signature(func)
         type_hints = typing.get_type_hints(func, include_extras=True)
-        parameters = [
-            _convert_signiture(param, type_hints) for param in sig.parameters.values()
-        ]
         return Signature(
-            parameters=parameters, return_annotation=type_hints.get("return")
+            parameters=[
+                _convert_signiture(param, type_hints)
+                for param in inspect.signature(func).parameters.values()
+            ],
+            return_annotation=type_hints.get("return"),
         )
 
     @typing.no_type_check
     def lt_or_eq_308(self, func: typing.Any, localns: dict[str, type]) -> Signature:
-        sig = inspect.signature(func)
         type_hints = typing.get_type_hints(func, localns=localns)
-        parameters = [
-            _convert_signiture(param, type_hints) for param in sig.parameters.values()
-        ]
         return Signature(
-            parameters=parameters, return_annotation=type_hints.get("return")
+            parameters=[
+                _convert_signiture(param, type_hints)
+                for param in inspect.signature(func).parameters.values()
+            ],
+            return_annotation=type_hints.get("return"),
         )
 
 
