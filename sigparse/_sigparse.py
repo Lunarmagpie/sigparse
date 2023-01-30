@@ -62,8 +62,19 @@ class Parameter:
 
 @dataclasses.dataclass
 class Signature:
+    """
+    `return_annotation` is `inspect._empty` when there is no return annotation.
+    """
+
     parameters: list[Parameter]
     return_annotation: typing.Any
+
+    @property
+    def has_return_annotation(self) -> bool:
+        """
+        Return `True` if the function has a return annotation.
+        """
+        return self.return_annotation is not inspect._empty
 
 
 def _convert_signiture(
@@ -95,7 +106,7 @@ class Sigparse(Applicator[typing.Any, Signature]):
                 _convert_signiture(param, type_hints)
                 for param in inspect.signature(func).parameters.values()
             ],
-            return_annotation=type_hints.get("return"),
+            return_annotation=type_hints.get("return", inspect._empty),
         )
 
     @typing.no_type_check
@@ -106,7 +117,7 @@ class Sigparse(Applicator[typing.Any, Signature]):
                 _convert_signiture(param, type_hints)
                 for param in inspect.signature(func).parameters.values()
             ],
-            return_annotation=type_hints.get("return"),
+            return_annotation=type_hints.get("return", inspect._empty),
         )
 
 
