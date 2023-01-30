@@ -94,7 +94,9 @@ class Sigparse(Applicator[typing.Any, Signature]):
         parameters = [
             _convert_signiture(param, type_hints) for param in sig.parameters.values()
         ]
-        return Signature(parameters=parameters, return_annotation=sig.return_annotation)
+        return Signature(
+            parameters=parameters, return_annotation=type_hints.get("return")
+        )
 
     @typing.no_type_check
     def lt_or_eq_308(self, func: typing.Any, localns: dict[str, type]) -> Signature:
@@ -103,7 +105,9 @@ class Sigparse(Applicator[typing.Any, Signature]):
         parameters = [
             _convert_signiture(param, type_hints) for param in sig.parameters.values()
         ]
-        return Signature(parameters=parameters, return_annotation=sig.return_annotation)
+        return Signature(
+            parameters=parameters, return_annotation=type_hints.get("return")
+        )
 
 
 def sigparse(func: typing.Any) -> Signature:
