@@ -1,6 +1,7 @@
 import typing
 import sigparse
 
+
 def test_unwrap():
     assert sigparse.utils.unwrap(typing.Union[int, None]) == int
     assert sigparse.utils.unwrap(typing.Union[None, None]) == None

@@ -31,6 +31,7 @@ def test_sigparse_subscriptable():
     # Subscripting worked properly if this passed without errors.
     sigparse.sigparse(func)
 
+
 def test_classparse_union():
     class Cls:
         param: int | str
@@ -39,11 +40,10 @@ def test_classparse_union():
 
     assert res == [
         sigparse.ClassVar(
-            name="param",
-            annotation=typing.Union[int, str],
-            default=inspect._empty,
+            name="param", annotation=typing.Union[int, str], default=inspect._empty
         )
     ]
+
 
 def test_classparse_subscriptable():
     class Cls:
@@ -54,7 +54,6 @@ def test_classparse_subscriptable():
 
     # same as test_sigparse_subscriptable
     sigparse.classparse(Cls)
-
 
 
 @pytest.mark.skipif(
