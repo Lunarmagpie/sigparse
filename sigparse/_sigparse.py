@@ -33,7 +33,7 @@ from sigparse._applicator import Applicator
 __all__: typing.Sequence[str] = ("sigparse", "Parameter", "Signature")
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Parameter:
     """
     `default` and `annotation` are `inspect._empty` when there is no default or
@@ -60,7 +60,7 @@ class Parameter:
         return self.annotation is not inspect._empty
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Signature:
     """
     `return_annotation` is `inspect._empty` when there is no return annotation.

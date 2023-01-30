@@ -33,7 +33,7 @@ from sigparse._applicator import Applicator
 __all__: typing.Sequence[str] = ("classparse", "ClassVar")
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class ClassVar:
     """
     `default` is `inspect._empty` when there is no default value.
