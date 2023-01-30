@@ -43,6 +43,7 @@ sigparse.global_PEP604()
 
 This module uses inspect behind the scenes. For that reason:
 
+- All annotations are `inspect._empty` when there is no annotation.
 - `sigparse.Parameter.default` is `inspect._empty` when there is no default value.
 - `sigparse.Parameter.kind` is `inspect._ParameterKind`.
 - `sigparse.ClassVar.default` is `inspect._empty` when there is no default value to maintain consistency.

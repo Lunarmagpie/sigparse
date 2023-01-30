@@ -30,7 +30,7 @@ import inspect
 
 from sigparse._applicator import Applicator
 
-__all__: typing.Sequence[str] = ("sigparse", "Parameter")
+__all__: typing.Sequence[str] = ("sigparse", "Parameter", "Signature")
 
 
 @dataclasses.dataclass
@@ -60,6 +60,23 @@ class Parameter:
         return self.annotation is not inspect._empty
 
 
+@dataclasses.dataclass
+class Signature:
+    """
+    `return_annotation` is `inspect._empty` when there is no return annotation.
+    """
+
+    parameters: list[Parameter]
+    return_annotation: typing.Any
+
+    @property
+    def has_return_annotation(self) -> bool:
+        """
+        Return `True` if the function has a return annotation.
+        """
+        return self.return_annotation is not inspect._empty
+
+
 def _convert_signiture(
     param: inspect.Parameter, type_hints: dict[str, type[typing.Any]]
 ) -> Parameter:
@@ -72,32 +89,37 @@ def _convert_signiture(
     )
 
 
-class Sigparse(Applicator[typing.Any, "list[Parameter]"]):
+class Sigparse(Applicator[typing.Any, Signature]):
     @typing.no_type_check
-    def gt_or_eq_310(self, func: typing.Any) -> list[Parameter]:
-        return [
-            _convert_signiture(param, {})
-            for param in inspect.signature(func, eval_str=True).parameters.values()
+    def gt_or_eq_310(self, func: typing.Any) -> Signature:
+        sig = inspect.signature(func, eval_str=True)
+        parameters = [
+            _convert_signiture(param, {}) for param in sig.parameters.values()
         ]
+        return Signature(parameters=parameters, return_annotation=sig.return_annotation)
 
     @typing.no_type_check
-    def eq_309(self, func: typing.Any) -> list[Parameter]:
-        sig = inspect.signature(func)
+    def eq_309(self, func: typing.Any) -> Signature:
         type_hints = typing.get_type_hints(func, include_extras=True)
-        return [
-            _convert_signiture(param, type_hints) for param in sig.parameters.values()
-        ]
+        return Signature(
+            parameters=[
+                _convert_signiture(param, type_hints)
+                for param in inspect.signature(func).parameters.values()
+            ],
+            return_annotation=type_hints.get("return", inspect._empty),
+        )
 
     @typing.no_type_check
-    def lt_or_eq_308(
-        self, func: typing.Any, localns: dict[str, type]
-    ) -> list[Parameter]:
-        sig = inspect.signature(func)
+    def lt_or_eq_308(self, func: typing.Any, localns: dict[str, type]) -> Signature:
         type_hints = typing.get_type_hints(func, localns=localns)
-        return [
-            _convert_signiture(param, type_hints) for param in sig.parameters.values()
-        ]
+        return Signature(
+            parameters=[
+                _convert_signiture(param, type_hints)
+                for param in inspect.signature(func).parameters.values()
+            ],
+            return_annotation=type_hints.get("return", inspect._empty),
+        )
 
 
-def sigparse(func: typing.Any) -> list[Parameter]:
+def sigparse(func: typing.Any) -> Signature:
     return Sigparse(func)()
