@@ -8,15 +8,17 @@ import pytest
 
 
 def test_sigparse_union():
-    def func(param: int | str):
+    def func(param: int | str) -> int | str:
         ...
 
-    param = next(iter(sigparse.sigparse(func)))
+    sig = sigparse.sigparse(func)
+    param = next(iter(sig.parameters))
 
     assert param.name == "param"
-    assert param.annotation == typing.Union[typing.Union[int, str]]
+    assert param.annotation == typing.Union[int, str]
     assert param.default == inspect._empty
     assert param.kind == inspect._ParameterKind.POSITIONAL_OR_KEYWORD
+    assert sig.return_annotation == typing.Union[int, str]
 
 
 def test_sigparse_subscriptable():
@@ -25,7 +27,7 @@ def test_sigparse_subscriptable():
         _list: list[typing.Any],
         _tuple: tuple[typing.Any],
         _type: type[typing.Any],
-    ):
+    ) -> list[typing.Any]:
         ...
 
     # Subscripting worked properly if this passed without errors.
