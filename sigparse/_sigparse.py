@@ -29,6 +29,7 @@ import typing
 import inspect
 
 from sigparse._applicator import Applicator
+from sigparse._errors import SigparseError
 
 __all__: typing.Sequence[str] = ("sigparse", "Parameter", "Signature")
 
@@ -122,4 +123,7 @@ class Sigparse(Applicator[typing.Any, Signature]):
 
 
 def sigparse(func: typing.Any) -> Signature:
-    return Sigparse(func)()
+    try:
+        return Sigparse(func)()
+    except SigparseError as e:
+        raise SigparseError(str(e)) from None

@@ -26,6 +26,7 @@ import typing
 import sys
 
 from sigparse._pep604 import PEP604_CTX
+from sigparse._errors import SigparseError
 
 LOCALNS: dict[str, typing.Any] = {
     "list": typing.List,
@@ -41,16 +42,19 @@ OUT = typing.TypeVar("OUT")
 
 class Applicator(abc.ABC, typing.Generic[IN, OUT]):
     def __init__(self, obj: IN) -> None:
-        if sys.version_info >= (3, 10):
-            self.return_value = self.gt_or_eq_310(obj)
+        try:
+            if sys.version_info >= (3, 10):
+                self.return_value = self.gt_or_eq_310(obj)
 
-        elif sys.version_info >= (3, 9):
-            with PEP604_CTX():
-                self.return_value = self.eq_309(obj)
+            elif sys.version_info >= (3, 9):
+                with PEP604_CTX():
+                    self.return_value = self.eq_309(obj)
 
-        else:
-            with PEP604_CTX():
-                self.return_value = self.lt_or_eq_308(obj, LOCALNS)
+            else:
+                with PEP604_CTX():
+                    self.return_value = self.lt_or_eq_308(obj, LOCALNS)
+        except NameError as e:
+            raise SigparseError(str(e)) from None
 
     def __call__(self) -> OUT:
         return self.return_value

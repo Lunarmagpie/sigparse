@@ -28,6 +28,7 @@ import inspect
 import typing
 
 from sigparse._applicator import Applicator
+from sigparse._errors import SigparseError
 
 
 __all__: typing.Sequence[str] = ("classparse", "ClassVar")
@@ -86,4 +87,7 @@ class Classparse(Applicator[type, "list[ClassVar]"]):
 
 
 def classparse(cls: type) -> list[ClassVar]:
-    return Classparse(cls)()
+    try:
+        return Classparse(cls)()
+    except SigparseError as e:
+        raise SigparseError(str(e)) from None
